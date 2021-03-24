@@ -24,3 +24,23 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Ubuntu', sans-serif!important;
+}
+
+ion-toolbar {
+  --opacity: 0.2!important;
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+ion-content{
+  --background: none;
+  background: url(./assets/background.jpg) center/cover no-repeat fixed;
+  color: white!important;
+  font-family: 'Ubuntu', sans-serif;
+  background-size: cover;
+}

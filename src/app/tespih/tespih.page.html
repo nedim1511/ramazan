@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Tespih</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <h1 class="ion-text-center" style="color: white">{{ count }} <span style="font-size: 16px"> / 33</span></h1>
+    <div
+      (click)="count = count + 1"
+      class="button">
+    </div>
+    <ion-button color="light" (click)="count = 0">
+      <ion-icon style="margin-right: 5px" name="refresh-outline"></ion-icon>
+      Reset
+    </ion-button>
+  </div>
+</ion-content>

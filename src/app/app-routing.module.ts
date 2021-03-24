@@ -4,12 +4,24 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    redirectTo: 'onboarding',
     pathMatch: 'full'
   },
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  },
+  {
+    path: 'tespih',
+    loadChildren: () => import('./tespih/tespih.module').then( m => m.TespihPageModule)
+  },
+  {
+    path: 'odbrojavanje',
+    loadChildren: () => import('./odbrojavanje/odbrojavanje.module').then( m => m.OdbrojavanjePageModule)
+  },
+  {
+    path: 'onboarding',
+    loadChildren: () => import('./onboarding/onboarding.module').then( m => m.OnboardingPageModule)
   }
 ];
 

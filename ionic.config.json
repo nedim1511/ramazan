@@ -1,5 +1,7 @@
 {
   "name": "ramazan",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

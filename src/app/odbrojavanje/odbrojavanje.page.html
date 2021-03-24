@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Odbrojavanje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <h1 class="capitalize">
+      {{ isIftar ? 'Iftar' : 'Sehur' }} je za:
+    </h1>
+    <br>
+    <flx-circle-timer
+      #timer
+      color="#3880ff"
+      style="color: white!important"
+      [startDate]="startDate"
+      [duration]="duration"
+      (onComplete)="odbrojano()"
+    ></flx-circle-timer>
+    <br>
+    <ion-button>
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      {{ city }}
+    </ion-button>
+  </div>
+</ion-content>
