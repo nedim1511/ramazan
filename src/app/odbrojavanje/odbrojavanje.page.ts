@@ -62,10 +62,10 @@ export class OdbrojavanjePage implements AfterViewInit {
         this.city = this.gradoviPostanskiBroj.get(postanskiBroj);
         this.populateVakat();
       } else {
-        this.showError('Nažalost, nemamo vrijeme iftara i sehura za grad u kojem se trenutno nalazite. Trudićemo se da dodajemo što više gradova u budućnosti. Hvala na strpljenju.');
+        this.showAlert('Greška', 'Nažalost, nemamo vrijeme iftara i sehura za grad u kojem se trenutno nalazite. Trudićemo se da dodajemo što više gradova u budućnosti. Hvala na strpljenju.');
       }
     } else {
-      this.showError('Nažalost, došlo je do greške prilikom automatskog pronalaska vaše lokacije. Molimo izaberite svoj grad ručno.');
+      this.showAlert('Greška', 'Nažalost, došlo je do greške prilikom automatskog pronalaska vaše lokacije. Molimo izaberite svoj grad ručno.');
     }
   }
 
@@ -154,9 +154,9 @@ export class OdbrojavanjePage implements AfterViewInit {
     return new Date(dt.getTime() + 86400000).getDate() === 1;
   }
 
-  private async showError(message: string) {
+  private async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Greška',
+      header,
       message,
       buttons: ['OK']
     });
@@ -164,9 +164,11 @@ export class OdbrojavanjePage implements AfterViewInit {
   }
 
   odbrojano() {
+    this.showAlert(
+      'Ugodan ' + this.isIftar ? 'iftar!' : 'post!',
+      'Da vam Allah dž.š. ' + this.isIftar ? 'ukabuli i primi' : 'olakša i ukabuli' + ' današnji post.');
     this.isIftar = !this.isIftar;
-    // Ako je isIftar = true, sehur je upravo završio, zovi API i popuni this.duration od iftarskog vremena
-    // Ako je isIftar = false, iftar je upravo završio, zovi API i popuni this.duration od sehurkog vremena idućeg dana
+    this.populateVakat();
   }
 
   private loadGradovi() {
