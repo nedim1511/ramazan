@@ -15,7 +15,7 @@ export class OdbrojavanjePage implements AfterViewInit {
   @ViewChild('timer', {static: true}) timer: CircleTimerComponent;
 
   startDate: any;
-  duration: number;
+  duration = 0;
   gradoviVaktijaBa: Map<string, number>;
   gradoviPostanskiBroj: Map<string, string>;
   city: string;
