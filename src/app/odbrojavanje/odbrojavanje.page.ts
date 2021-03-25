@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
 import {CircleTimerComponent} from '@flxng/circle-timer';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder/ngx';
@@ -17,7 +17,7 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
   @ViewChild('timer', {static: true}) timer: CircleTimerComponent;
 
   startDate: any;
-  duration = 0;
+  duration = 10;
   gradoviVaktijaBa: Map<string, number>;
   gradoviPostanskiBroj: Map<string, string>;
   city: string;
@@ -37,7 +37,9 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     private nativeGeocoder: NativeGeocoder,
     private service: VaktijaService,
     private alertController: AlertController,
-    private platform: Platform
+    private platform: Platform,
+    private ref: ChangeDetectorRef,
+    private zone: NgZone
   ) {
     this.loadGradovi();
     this.loadPostanskiBrojevi();
@@ -137,6 +139,7 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     }
 
     this.countDownText = this.isIftar ? 'Iftar' : 'Sehur';
+    this.timer.init();
     this.timer.duration = this.duration;
     this.timer.startDate = this.startDate;
     this.timer.start(this.startDate);
@@ -181,7 +184,12 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
 
   private observeApplicationReturnFromBackground() {
     this.platform.resume.pipe(takeUntil(this.unsubscribe$)).subscribe(async () => {
-      this.populateVakat();
+      this.ref.detectChanges();
+      this.zone.run(() => {
+        setTimeout(() => {
+          this.populateVakat();
+        }, 100);
+      });
     });
   }
 
