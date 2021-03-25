@@ -9,8 +9,8 @@
 
 <ion-content [fullscreen]="true">
   <div id="container">
-    <h1 class="capitalize">
-      {{ isIftar ? 'Iftar' : 'Sehur' }} je za:
+    <h1 class="capitalize" *ngIf="countDownText">
+      {{ countDownText }} je za:
     </h1>
     <br>
     <flx-circle-timer

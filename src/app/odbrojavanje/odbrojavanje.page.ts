@@ -1,17 +1,19 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {CircleTimerComponent} from '@flxng/circle-timer';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder/ngx';
 import {VaktijaService} from './vaktija.service';
 import {VakatMOdel} from './models/vakat.model';
-import {AlertController} from '@ionic/angular';
+import {AlertController, Platform} from '@ionic/angular';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-odbrojavanje',
   templateUrl: './odbrojavanje.page.html',
   styleUrls: ['./odbrojavanje.page.scss'],
 })
-export class OdbrojavanjePage implements AfterViewInit {
+export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
   @ViewChild('timer', {static: true}) timer: CircleTimerComponent;
 
   startDate: any;
@@ -20,6 +22,7 @@ export class OdbrojavanjePage implements AfterViewInit {
   gradoviPostanskiBroj: Map<string, string>;
   city: string;
   isIftar: boolean;
+  countDownText: string;
 
   // Reverse Geocode
   reverseGeocodeOptions: NativeGeocoderOptions = {
@@ -27,11 +30,14 @@ export class OdbrojavanjePage implements AfterViewInit {
     maxResults: 5
   };
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     private service: VaktijaService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private platform: Platform
   ) {
     this.loadGradovi();
     this.loadPostanskiBrojevi();
@@ -39,6 +45,7 @@ export class OdbrojavanjePage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getCurrentLocation();
+    this.observeApplicationReturnFromBackground();
   }
 
   private getCurrentLocation() {
@@ -129,6 +136,7 @@ export class OdbrojavanjePage implements AfterViewInit {
       console.log(tomorrowSehurTime);
     }
 
+    this.countDownText = this.isIftar ? 'Iftar' : 'Sehur';
     this.timer.duration = this.duration;
     this.timer.startDate = this.startDate;
     this.timer.start(this.startDate);
@@ -169,6 +177,17 @@ export class OdbrojavanjePage implements AfterViewInit {
       'Da vam Allah dž.š. ' + this.isIftar ? 'ukabuli i primi' : 'olakša i ukabuli' + ' današnji post.');
     this.isIftar = !this.isIftar;
     this.populateVakat();
+  }
+
+  private observeApplicationReturnFromBackground() {
+    this.platform.resume.pipe(takeUntil(this.unsubscribe$)).subscribe(async () => {
+      this.populateVakat();
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private loadGradovi() {
