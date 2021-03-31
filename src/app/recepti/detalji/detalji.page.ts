@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './detalji.page.html',
   styleUrls: ['../recepti.page.scss'],
 })
-export class DetaljiPage implements OnInit {
+export class DetaljiPage{
   id = this.route.snapshot.params.id;
   receptiMapper = new Map<number, { sastojci: string[], priprema: string }>();
   selectedItem: { sastojci: string[], priprema: string };
@@ -16,9 +16,6 @@ export class DetaljiPage implements OnInit {
   ) {
     this.populateReceptiMapper();
     this.selectedItem = this.receptiMapper.get(Number(this.id));
-  }
-
-  ngOnInit() {
   }
 
   private populateReceptiMapper() {
