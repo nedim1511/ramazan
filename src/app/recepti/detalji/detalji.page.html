@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Uputstva</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="container">
+    <div class="card main-card" *ngIf="selectedItem as recept">
+      <img class="card-img-top" [src]="'../../../assets/recepti/' + id + '.jpg'" alt="Card image cap">
+      <div class="card-body">
+        <h3 class="card-text">Sastojci:</h3>
+        <ng-container *ngFor="let sastojak of recept.sastojci">
+          <hr class="hr">
+          <h5 class="card-text">{{ sastojak }}</h5>
+        </ng-container>
+        <p class="card-text">
+          {{ recept.priprema }}
+        </p>
+        <ion-button routerLink="/recepti">
+          Drugi recepti...
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

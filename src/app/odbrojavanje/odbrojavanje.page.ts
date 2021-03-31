@@ -93,49 +93,31 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     const today = new Date();
     const todaySehur: string = vakat.dan[today.getDate() - 1].vakat[0];
     const todayIftar: string = vakat.dan[today.getDate() - 1].vakat[4];
-    let tomorrowSehur: string;
-
-    // Izračunajmo sutrašnji sehur
-    if (this.isLastDayOfMonth()) {
-      this.service.getVrijeme(
-        this.gradoviVaktijaBa.get(this.city),
-        new Date().getMonth() + 2,
-        new Date().getFullYear()
-      ).subscribe((data) => {
-        tomorrowSehur = data.dan[0].vakat[0];
-        this.setUpTimer(todayIftar, todaySehur, tomorrowSehur);
-      });
-    } else {
-      tomorrowSehur = vakat.dan[today.getDate()].vakat[0];
-      this.setUpTimer(todayIftar, todaySehur, tomorrowSehur);
-    }
+    this.setUpTimer(todayIftar, todaySehur);
   }
 
-  private setUpTimer(todayIftar: string, todaySehur: string, tomorrowSehur: string) {
+  private setUpTimer(todayIftar: string, todaySehur: string) {
     const now = new Date();
     const iftarTime = this.getDateFromString(todayIftar);
     const sehurTime = this.getDateFromString(todaySehur);
-    const tomorrowSehurTime = this.getDateFromString(tomorrowSehur, true);
 
-    // Ako je trenutno manje sati od iftarskog vremena, isIftar = true
+    console.log(now);
+    console.log(iftarTime);
+    console.log(sehurTime);
+
     if (now > sehurTime && now < iftarTime) {
       this.isIftar = true;
       this.startDate = sehurTime.getTime();
       this.duration = iftarTime.getTime() - sehurTime.getTime();
-    } else if (now > iftarTime && now.getTime() < this.getMidnightDate().getTime()) {
+    } else if (now > iftarTime) {
       this.isIftar = false;
       this.startDate = iftarTime.getTime();
-      this.duration = tomorrowSehurTime.getTime() - iftarTime.getTime();
-    } else if (now > iftarTime && now.getTime() > this.getMidnightDate().getTime()) {
-      this.isIftar = false;
-      this.startDate = iftarTime.getTime();
-      this.duration = sehurTime.getTime() - iftarTime.getTime();
+      this.duration = sehurTime.getTime() + (1000 * 60 * 60 * 24) - iftarTime.getTime();
     } else {
       console.log('Neki novi nepoznati condition');
       console.log(now);
       console.log(iftarTime);
       console.log(sehurTime);
-      console.log(tomorrowSehurTime);
     }
 
     this.countDownText = this.isIftar ? 'Iftar' : 'Sehur';
@@ -145,24 +127,12 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     this.timer.start(this.startDate);
   }
 
-  // Nearest midnight in future
-  private getMidnightDate(): Date {
-    const date = new Date();
-    date.setHours(24, 0, 0, 0);
-    return date;
-  }
-
-  private getDateFromString(date: string, tomorrow?: boolean): Date {
+  private getDateFromString(date: string): Date {
     const today = new Date();
     const splitTime: string[] = date.split(':');
     const time = Number(splitTime[0]);
     const minutes = Number(splitTime[1]);
-    return new Date(today.getFullYear(), today.getMonth(), tomorrow ? today.getDate() + 1 : today.getDate(), time, minutes);
-  }
-
-  private isLastDayOfMonth(): boolean {
-    const dt = new Date();
-    return new Date(dt.getTime() + 86400000).getDate() === 1;
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate(), time, minutes, today.getSeconds(), today.getMilliseconds());
   }
 
   private async showAlert(header: string, message: string) {
@@ -176,8 +146,8 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
 
   odbrojano() {
     this.showAlert(
-      'Ugodan ' + this.isIftar ? 'iftar!' : 'post!',
-      'Da vam Allah dž.š. ' + this.isIftar ? 'ukabuli i primi' : 'olakša i ukabuli' + ' današnji post.');
+      'Ugodan ' + (this.isIftar ? 'iftar!' : 'post!'),
+      'Da vam Allah dž.š. ' + (this.isIftar ? 'ukabuli i primi' : 'olakša i ukabuli') + ' današnji post.');
     this.isIftar = !this.isIftar;
     this.populateVakat();
   }

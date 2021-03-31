@@ -1,0 +1,50 @@
+ion-content {
+  --background: none;
+  background: url(../../assets/recepti/background.jpg) center/cover no-repeat fixed;
+  color: white!important;
+  font-family: 'Ubuntu', sans-serif;
+  background-size: cover;
+}
+
+#container {
+  text-align: center;
+  margin: 20px;
+}
+
+.texthrana {
+  text-align: center;
+  margin-top: 10%;
+  color: white;
+  font-size: 150%;
+  font-family: 'Paytone One', sans-serif;
+}
+
+.main-card {
+  width: 100%;
+  padding: 20px;
+  margin-top: 2%;
+  background-color: black;
+  border-radius: 15px;
+}
+
+.card-img-top {
+  margin-top: 5%;
+  border-radius: 5%;
+}
+
+.btn-width {
+  width: 100%;
+}
+
+.card-text {
+  color: white;
+}
+
+.recept-text {
+  color: white;
+  text-align: left;
+}
+
+.hr {
+  color: white;
+}

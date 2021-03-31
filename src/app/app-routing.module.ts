@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'onboarding',
     loadChildren: () => import('./onboarding/onboarding.module').then( m => m.OnboardingPageModule)
+  },
+  {
+    path: 'recepti',
+    loadChildren: () => import('./recepti/recepti.module').then( m => m.ReceptiPageModule)
   }
 ];
 
