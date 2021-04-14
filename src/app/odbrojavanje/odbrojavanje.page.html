@@ -22,9 +22,15 @@
       (onComplete)="odbrojano()"
     ></flx-circle-timer>
     <br>
-    <ion-button>
-      <ion-icon slot="start" name="location-outline"></ion-icon>
-      {{ city }}
-    </ion-button>
+    <ion-item color="primary">
+      <ion-select placeholder="Odaberite grad" (ionChange)="cityChange($event)" [selectedText]="city" okText="OK" cancelText="Zatvori">
+        <ion-select-option
+          [value]="grad.key"
+          *ngFor="let grad of gradoviPostanskiBroj | keyvalue: valueAscOrder"
+        >
+          {{ grad.value }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
   </div>
 </ion-content>

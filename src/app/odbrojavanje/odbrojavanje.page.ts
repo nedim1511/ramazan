@@ -7,6 +7,7 @@ import {VakatMOdel} from './models/vakat.model';
 import {AlertController, Platform} from '@ionic/angular';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {KeyValue} from '@angular/common';
 
 @Component({
   selector: 'app-odbrojavanje',
@@ -97,27 +98,25 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
   }
 
   private setUpTimer(todayIftar: string, todaySehur: string) {
-    const now = new Date();
+    const now = this.getDateFromString();
     const iftarTime = this.getDateFromString(todayIftar);
     const sehurTime = this.getDateFromString(todaySehur);
 
-    console.log(now);
-    console.log(iftarTime);
-    console.log(sehurTime);
-
     if (now > sehurTime && now < iftarTime) {
+      // npr. 15:30
       this.isIftar = true;
       this.startDate = sehurTime.getTime();
       this.duration = iftarTime.getTime() - sehurTime.getTime();
     } else if (now > iftarTime) {
+      // npr. 22:30
       this.isIftar = false;
       this.startDate = iftarTime.getTime();
       this.duration = sehurTime.getTime() + (1000 * 60 * 60 * 24) - iftarTime.getTime();
-    } else {
-      console.log('Neki novi nepoznati condition');
-      console.log(now);
-      console.log(iftarTime);
-      console.log(sehurTime);
+    } else if (now < sehurTime && now < iftarTime) {
+      // npr. 01:00
+      this.isIftar = false;
+      this.startDate = now.getTime();
+      this.duration = sehurTime.getTime() - now.getTime();
     }
 
     this.countDownText = this.isIftar ? 'Iftar' : 'Sehur';
@@ -127,12 +126,25 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     this.timer.start(this.startDate);
   }
 
-  private getDateFromString(date: string): Date {
+  private getDateFromString(date?: string): Date {
     const today = new Date();
+
+    if (!date) {
+      return new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        today.getHours(),
+        today.getMinutes(),
+        today.getSeconds(),
+        today.getMilliseconds()
+      );
+    }
+
     const splitTime: string[] = date.split(':');
     const time = Number(splitTime[0]);
     const minutes = Number(splitTime[1]);
-    return new Date(today.getFullYear(), today.getMonth(), today.getDate(), time, minutes, today.getSeconds(), today.getMilliseconds());
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate(), time, minutes, 0, 0);
   }
 
   private async showAlert(header: string, message: string) {
@@ -411,4 +423,14 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     this.gradoviPostanskiBroj.set('36310', 'Sjenica');
     this.gradoviPostanskiBroj.set('36320', 'Tutin');
   }
+
+  valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
+    return a.value.localeCompare(b.value);
+  }
+
+  cityChange(postanskiBroj: any) {
+    this.city = this.gradoviPostanskiBroj.get(postanskiBroj.detail.value);
+    this.populateVakat();
+  }
+
 }
