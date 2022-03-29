@@ -32,5 +32,10 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
+
+    <ion-item *ngIf="city" color="dark">
+      <ion-label>Zapamti grad</ion-label>
+      <ion-checkbox slot="start" [(ngModel)]="zapamtiGrad" (ionChange)="zapamtiGradChange()"></ion-checkbox>
+    </ion-item>
   </div>
 </ion-content>

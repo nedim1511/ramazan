@@ -26,6 +26,7 @@
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.2",
     "@ionic/storage-angular": "^3.0.2",
+    "cordova-ios": "6.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -41,7 +42,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
-    "cordova-ios": "^6.2.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.1.0",
@@ -77,6 +77,7 @@
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
+      "android",
       "ios"
     ]
   }
