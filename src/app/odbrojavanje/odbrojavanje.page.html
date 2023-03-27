@@ -21,8 +21,8 @@
       [duration]="duration"
       (onComplete)="odbrojano()"
     ></flx-circle-timer>
-    <br>
-    <ion-item color="primary">
+
+    <ion-item color="primary" style="margin-top: 20px;">
       <ion-select placeholder="Odaberite grad" (ionChange)="cityChange($event)" [selectedText]="city" okText="OK" cancelText="Zatvori">
         <ion-select-option
           [value]="grad.key"
@@ -33,7 +33,7 @@
       </ion-select>
     </ion-item>
 
-    <ion-item *ngIf="city" color="dark">
+    <ion-item *ngIf="city" color="dark" style="margin-top: 20px;">
       <ion-label>Zapamti grad</ion-label>
       <ion-checkbox slot="start" [(ngModel)]="zapamtiGrad" (ionChange)="zapamtiGradChange()"></ion-checkbox>
     </ion-item>
