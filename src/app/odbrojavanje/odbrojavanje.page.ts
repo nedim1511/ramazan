@@ -127,7 +127,7 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
       this.duration = sehurTime.getTime() - now.getTime();
     }
 
-    this.countDownText = this.isIftar ? 'Iftar' : 'Sehur';
+    this.countDownText = this.isIftar ? 'Iftar' : 'Zora';
     this.timer.init();
     this.timer.duration = this.duration;
     this.timer.startDate = this.startDate;

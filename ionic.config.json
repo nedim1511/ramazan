@@ -1,7 +1,8 @@
 {
   "name": "ramazan",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
