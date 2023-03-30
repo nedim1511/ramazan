@@ -24,7 +24,6 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
   city: string;
   isIftar: boolean;
   countDownText: string;
-  zapamtiGrad: boolean;
 
   // Reverse Geocode
   reverseGeocodeOptions: NativeGeocoderOptions = {
@@ -51,7 +50,6 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     const city = localStorage.getItem('grad');
     if (city) {
       this.city = city;
-      this.zapamtiGrad = true;
       this.populateVakat();
     } else {
       this.getCurrentLocation();
@@ -170,14 +168,6 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
       'Da vam Allah dž.š. ' + (this.isIftar ? 'ukabuli i primi' : 'olakša i ukabuli') + ' današnji post.');
     this.isIftar = !this.isIftar;
     this.populateVakat();
-  }
-
-  public zapamtiGradChange(): void {
-    if (this.zapamtiGrad) {
-      localStorage.setItem('grad', this.city);
-    } else {
-      localStorage.removeItem('grad');
-    }
   }
 
   private observeApplicationReturnFromBackground() {
@@ -442,13 +432,11 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
 
   valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
     return a.value.localeCompare(b.value);
-  };
+  }
 
   cityChange(postanskiBroj: any) {
     this.city = this.gradoviPostanskiBroj.get(postanskiBroj.detail.value);
-    if (this.zapamtiGrad) {
-      localStorage.setItem('grad', this.city);
-    }
+    localStorage.setItem('grad', this.city);
     this.populateVakat();
   }
 
