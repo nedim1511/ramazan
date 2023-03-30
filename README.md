@@ -1,4 +1,4 @@
-#Ramazan App
+# Ramazan App
 
 Note: Ako nece da run-a, probaj ovo:
 1) Izbrisi `node_modules` folder
