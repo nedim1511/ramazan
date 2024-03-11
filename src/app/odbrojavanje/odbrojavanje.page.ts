@@ -86,13 +86,35 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
   }
 
   private populateVakat() {
-    this.service.getVrijeme(
-      this.gradoviVaktijaBa.get(this.city),
-      new Date().getMonth() + 1,
-      new Date().getFullYear()
-    ).subscribe((res) => {
-      this.onPopulateVakatSuccess(res);
-    });
+    if (
+      this.city.toUpperCase() === 'NORDHORN' ||
+      this.city.toUpperCase() === 'HARDENBERG' ||
+      this.city.toUpperCase() === 'OLDENZAAL' ||
+      this.city.toUpperCase() === 'LOSSER' ||
+      this.city.toUpperCase() === 'GRONAU' ||
+      this.city.toUpperCase() === 'ENSCHEDE' ||
+      this.city.toUpperCase() === 'HENGELO' ||
+      this.city.toUpperCase() === 'WINTERSWIJK'
+    ) {
+      this.service.getVrijemeForRusmirTowns(
+        new Date().getMonth() + 1,
+        new Date().getFullYear()).
+      subscribe((res) => {
+        if (res) {
+          this.onPopulateVakatSuccess(res);
+        } else {
+          alert('Da Vam dragi Allah ukabuli post tokom mjeseca ramazana 2024. godine. Vidimo se ako Bog da u ramazanu 2025 godine. Amin.');
+        }
+      });
+    } else {
+      this.service.getVrijeme(
+        this.gradoviVaktijaBa.get(this.city),
+        new Date().getMonth() + 1,
+        new Date().getFullYear()
+      ).subscribe((res) => {
+        this.onPopulateVakatSuccess(res);
+      });
+    }
   }
 
   private onPopulateVakatSuccess(res: VakatMOdel) {
@@ -428,6 +450,14 @@ export class OdbrojavanjePage implements AfterViewInit, OnDestroy {
     this.gradoviPostanskiBroj.set('84310', 'Rožaje');
     this.gradoviPostanskiBroj.set('36310', 'Sjenica');
     this.gradoviPostanskiBroj.set('36320', 'Tutin');
+    this.gradoviPostanskiBroj.set('1', 'Nordhorn');
+    this.gradoviPostanskiBroj.set('2', 'Hardenberg');
+    this.gradoviPostanskiBroj.set('3', 'Oldenzaal');
+    this.gradoviPostanskiBroj.set('4', 'Losser');
+    this.gradoviPostanskiBroj.set('5', 'Gronau');
+    this.gradoviPostanskiBroj.set('6', 'Enschede');
+    this.gradoviPostanskiBroj.set('7', 'Hengelo');
+    this.gradoviPostanskiBroj.set('8', 'Winterswijk');
   }
 
   valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
